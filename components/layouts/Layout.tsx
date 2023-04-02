@@ -1,4 +1,4 @@
-import { FC, ReactElement, ReactNode } from "react"
+import { FC, ReactElement, ReactNode, useEffect } from 'react';
 
 import Head from "next/head"
 
@@ -6,10 +6,15 @@ import { Navbar } from '../ui';
 
 interface Props {
     children: ReactNode;
-    title: string;
+    title?: string;
 }
 
+const origin = (typeof window === 'undefined') ? '' : window.location.origin;
+
 export const Layout = ({ children, title }: Props) => {
+
+  console.log({origin})
+
   return (
     <>
     <Head>
@@ -17,6 +22,10 @@ export const Layout = ({ children, title }: Props) => {
         <meta name='author' content='Carlos de las salas' />
         <meta name='description' content='Información sobre el pokémon XXXXX' />
         <meta name='keywords' content='XXXXX, pokemon, pokedex' />
+        
+        <meta property="og:title" content={`Informacion sobre ${ title }` }/>
+        <meta property="og:description" content={`Esta es la información sobre ${ title }`} />
+        <meta property="og:image" content={`${ origin }/imgs/banner.png`}/>
     </Head>
 
     <Navbar/>
