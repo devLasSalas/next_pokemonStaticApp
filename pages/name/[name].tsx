@@ -25,9 +25,8 @@ interface Props {
 
 const PokemonPageByName: NextPage<Props> = ({ pokemon }) => {
 
-  console.log({ pokemon });
 
-  const [isInFavorites, setIsInFavorites]  = useState(false);
+  const [isInFavorites, setIsInFavorites]  = useState( false );
 
   useEffect(() => {
    const result: Boolean =  localFavorites.existFavorites( pokemon.id );
@@ -60,7 +59,7 @@ const PokemonPageByName: NextPage<Props> = ({ pokemon }) => {
 //   const IsInFavorites = isInFavorites ? 'En Favoritos' : 'Guardar en favoritos';
 
   return (
-    <Layout title={ pokemon.name }>
+    <Layout title={ pokemon?.name }>
       
       <Grid.Container css={{ marginTop: '5px'}} gap={ 2 }>
         
@@ -136,14 +135,26 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
       paths: pokemonsName.map( name => ({
         params: { name }
       })),
-    fallback: false
+    // fallback: false
+    fallback: 'blocking'
   }
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const { name } = params as { name: string };
+  
   const pokemon = await getPokemonInfo( name ); 
+  
+  if( !pokemon ) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
   return {
     props: {
       pokemon

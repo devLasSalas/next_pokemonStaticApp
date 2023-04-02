@@ -13,7 +13,6 @@ const origin = (typeof window === 'undefined') ? '' : window.location.origin;
 
 export const Layout = ({ children, title }: Props) => {
 
-  console.log({origin})
 
   return (
     <>
